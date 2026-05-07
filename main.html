@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>VR USG Training App</title>
-  <script src="[aframe.io](https://aframe.io/releases/1.4.2/aframe.min.js)"></script>
-  <script src="[cdn.jsdelivr.net](https://cdn.jsdelivr.net/npm/aframe-extras@7.0.0/dist/aframe-extras.min.js)"></script>
+  <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
   <style>
     #ui-panel {
       position: fixed;
@@ -140,36 +140,37 @@
 
     <!-- Green Target Zone (covers entire torso) -->
     <a-entity id="target-zone" position="0 0.63 -1">
-      <!-- Main torso highlight zone -->
-      <a-plane id="torso-zone"
-               rotation="-90 0 0"
-               width="0.7"
-               height="0.9"
-               color="#00ff88"
-               opacity="0.3"
-               side="double">
-        <a-animation attribute="opacity" 
-                     from="0.2" 
-                     to="0.5" 
-                     dur="1000" 
-                     direction="alternate" 
+      <!-- Main torso highlight volume -->
+      <a-box id="torso-zone"
+             width="0.7"
+             height="0.9"
+             depth="0.18"
+             color="#00ff88"
+             opacity="0.2"
+             material="transparent: true">
+        <a-animation attribute="opacity"
+                     from="0.15"
+                     to="0.35"
+                     dur="1000"
+                     direction="alternate"
                      repeat="indefinite"></a-animation>
-      </a-plane>
-      
-      <!-- Pulsing border effect -->
-      <a-ring id="zone-ring"
-              rotation="-90 0 0"
-              radius-inner="0.44"
-              radius-outer="0.48"
-              color="#00ff88"
-              opacity="0.8">
-        <a-animation attribute="scale" 
-                     from="1 1 1" 
-                     to="1.1 1.1 1.1" 
-                     dur="800" 
-                     direction="alternate" 
+      </a-box>
+
+      <!-- Outline frame for full-torso coverage -->
+      <a-box id="torso-outline"
+             width="0.72"
+             height="0.92"
+             depth="0.2"
+             color="#00ff88"
+             opacity="0.6"
+             material="wireframe: true; transparent: true">
+        <a-animation attribute="scale"
+                     from="1 1 1"
+                     to="1.05 1.05 1.05"
+                     dur="900"
+                     direction="alternate"
                      repeat="indefinite"></a-animation>
-      </a-ring>
+      </a-box>
     </a-entity>
 
     <!-- Probe Position Indicator -->
@@ -188,7 +189,7 @@
     </a-entity>
 
     <!-- Direction Arrow (pointing TOWARD patient) -->
-    <a-entity id="direction-arrow" position="0 1.2 -0.3" rotation="0 0 0">
+    <a-entity id="direction-arrow" position="0 1.2 -0.3" look-at="#patient">
       <!-- Arrow shaft -->
       <a-cylinder id="arrow-shaft"
                   radius="0.02"
@@ -448,48 +449,54 @@
       apical4: {
         name: 'Apical 4-Chamber',
         heartView: 'heart-apical4',
-        arrowRotation: { x: 0, y: 0, z: 0 },
         arrowPosition: { x: 0.1, y: 1.2, z: -0.3 },
+        heartPosition: { x: -0.8, y: 1.2, z: -1 },
+        heartScale: { x: 0.45, y: 0.45, z: 0.45 },
         instruction: 'Position at apex, marker toward left shoulder',
         usgLabel: 'ECHO - Apical 4C'
       },
       apical2: {
         name: 'Apical 2-Chamber',
         heartView: 'heart-apical2',
-        arrowRotation: { x: 0, y: -45, z: 0 },
         arrowPosition: { x: 0.1, y: 1.2, z: -0.3 },
+        heartPosition: { x: -0.8, y: 1.2, z: -1 },
+        heartScale: { x: 0.48, y: 0.48, z: 0.48 },
         instruction: 'Rotate 60° counterclockwise from 4-chamber',
         usgLabel: 'ECHO - Apical 2C'
       },
       parasternal: {
         name: 'Parasternal Long Axis',
         heartView: 'heart-parasternal',
-        arrowRotation: { x: 0, y: 45, z: 0 },
         arrowPosition: { x: -0.15, y: 1.2, z: -0.5 },
+        heartPosition: { x: -0.85, y: 1.2, z: -1.05 },
+        heartScale: { x: 0.42, y: 0.42, z: 0.42 },
         instruction: 'Left sternal border, 3rd-4th intercostal space',
         usgLabel: 'ECHO - PLAX'
       },
       subcostal: {
         name: 'Subcostal',
         heartView: 'heart-subcostal',
-        arrowRotation: { x: 30, y: 0, z: 0 },
         arrowPosition: { x: 0, y: 1.0, z: -0.2 },
+        heartPosition: { x: -0.75, y: 1.15, z: -1 },
+        heartScale: { x: 0.4, y: 0.4, z: 0.4 },
         instruction: 'Below xiphoid, probe nearly flat, aim toward left shoulder',
         usgLabel: 'ECHO - Subcostal'
       },
       leftVentricle: {
         name: 'Left Ventricle Focus',
         heartView: 'heart-lv-focus',
-        arrowRotation: { x: 0, y: 15, z: 0 },
         arrowPosition: { x: 0.12, y: 1.2, z: -0.35 },
+        heartPosition: { x: -0.8, y: 1.2, z: -0.9 },
+        heartScale: { x: 0.6, y: 0.6, z: 0.6 },
         instruction: 'Apical position, optimize for LV walls and cavity',
         usgLabel: 'ECHO - LV Focus'
       },
       rightVentricle: {
         name: 'Right Ventricle Focus',
         heartView: 'heart-rv-focus',
-        arrowRotation: { x: 0, y: -30, z: 0 },
         arrowPosition: { x: -0.1, y: 1.2, z: -0.35 },
+        heartPosition: { x: -0.8, y: 1.2, z: -0.9 },
+        heartScale: { x: 0.58, y: 0.58, z: 0.58 },
         instruction: 'Modified apical, rotate to focus on RV',
         usgLabel: 'ECHO - RV Focus'
       }
@@ -526,10 +533,14 @@
       const selectedHeart = document.getElementById(config.heartView);
       if (selectedHeart) selectedHeart.setAttribute('visible', true);
 
-      // Update arrow position and rotation (pointing toward patient)
+      // Update arrow position (orientation is handled by look-at)
       const arrow = document.getElementById('direction-arrow');
       arrow.setAttribute('position', config.arrowPosition);
-      arrow.setAttribute('rotation', config.arrowRotation);
+
+      // Update heart display position and scale for zoomed views
+      const heartDisplay = document.getElementById('heart-display');
+      heartDisplay.setAttribute('position', config.heartPosition);
+      heartDisplay.setAttribute('scale', config.heartScale);
 
       // Update USG monitor label
       document.getElementById('usg-label').setAttribute('value', config.usgLabel);
