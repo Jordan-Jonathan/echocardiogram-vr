@@ -27,24 +27,38 @@
   <video id="camera-preview" autoplay playsinline></video>
   <div id="status-ai">Mencari Tangan/Kontroler...</div>
 
-  <a-scene background="color: #1a1a2e" webxr="requiredFeatures: local-floor, hit-test">
+  <a-scene background="color: #1a1a2e" webxr="requiredFeatures: local-floor">
     
-    <!-- RIG: Kamera dan Kontroler -->
-    <a-entity id="rig" position="0 0 1.5">
-      <a-camera look-controls wasd-controls position="0 1.6 0">
+    <!-- RIG: Sekarang menggunakan movement-controls untuk Thumbstick Meta -->
+    <a-entity id="rig" 
+              movement-controls="controls: checkpoint, gamepad, trackpad, keyboard; speed: 0.1" 
+              position="0 0 1.5">
+              
+      <!-- Kamera: ditambahkan penyesuaian posisi agar tidak "tenggelam" di lantai -->
+      <a-entity camera 
+                position="0 1.6 0" 
+                look-controls="pointerLockEnabled: true">
         <a-cursor id="mouseCursor" raycaster="objects: .clickable" color="#00ff88"></a-cursor>
-      </a-camera>
+      </a-entity>
 
-      <!-- KONTROLER TANGAN KANAN (Master Controller) -->
-      <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: .clickable; far: 5" line="color: #00ff88">
-        <!-- Probe USG menempel di sini saat di VR -->
+      <!-- KONTROLER TANGAN KANAN (Laser & Probe) -->
+      <a-entity id="rightHand" 
+                oculus-touch-controls="hand: right"
+                laser-controls="hand: right" 
+                raycaster="objects: .clickable; far: 5" 
+                line="color: #00ff88">
+        
         <a-entity id="vr-probe" rotation="-90 0 0" visible="false">
           <a-cylinder radius="0.03" height="0.15" color="#333333"></a-cylinder>
           <a-sphere position="0 -0.08 0" radius="0.032" color="#666666"></a-sphere>
         </a-entity>
       </a-entity>
       
-      <a-entity id="leftHand" hand-controls="hand: left"></a-entity>
+      <!-- KONTROLER TANGAN KIRI (Navigasi) -->
+      <a-entity id="leftHand" 
+                oculus-touch-controls="hand: left"
+                movement-controls="controls: gamepad">
+      </a-entity>
     </a-entity>
 
     <!-- UI PANEL 3D (Agar bisa diklik di Metaverse) -->
